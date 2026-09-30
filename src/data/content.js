@@ -6,7 +6,7 @@ export const defaultContent = {
   eyebrow: 'Un pedacito de naturaleza en tu hogar',
   heroTitle: 'Plantas que transforman espacios',
   heroText: 'Cultivamos vida, diseñamos calma y llevamos la naturaleza a cada rincón.',
-  phone: '+52 55 1234 5678', email: 'hola@viverorosa.mx', location: 'Ciudad de México · Entregas en toda la ciudad',
+  phone: '+1 829 576 6860', email: 'hola@viverorosa.mx', location: 'Ciudad de México · Entregas en toda la ciudad',
   heroImage: 'https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=1600&q=85',
   services: [
     { icon: 'sprout', title: 'Plantas de interior', text: 'Selección de plantas sanas y hermosas para llenar tu hogar de vida.' },
@@ -35,8 +35,17 @@ const CONTENT_ID = 'main'
 const BUCKET = 'site-images'
 const MAX_IMAGE_BYTES = 6 * 1024 * 1024
 
+// Placeholders que deben ser sobreescritos por defaultContent si no fueron cambiados
+const PHONE_PLACEHOLDER = '+52 55 1234 5678'
+
 export function mergeContent(row) {
-  return { ...defaultContent, ...row }
+  const merged = { ...defaultContent, ...row }
+  // Si el phone en Supabase sigue siendo el placeholder original,
+  // usa el valor actualizado del defaultContent
+  if (!row.phone || row.phone === PHONE_PLACEHOLDER) {
+    merged.phone = defaultContent.phone
+  }
+  return merged
 }
 
 export async function fetchContent() {
